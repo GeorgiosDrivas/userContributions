@@ -1,48 +1,15 @@
-const express = require("express");
-const axios = require("axios");
+import express from "express";
+import fs from "fs/promises";
+import path from "path";
+import axios from "axios";
+import query from "./query.js";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+
 const app = express();
 
-// Define the GraphQL query
-const query = `
-  query GetContributions($username: String!) {
-    user(login: $username) {
-      contributionsCollection {
-        commitContributionsByRepository(maxRepositories: 100) {
-          repository {
-            nameWithOwner
-          }
-          contributions(first: 100) {
-            totalCount
-          }
-        }
-        pullRequestContributionsByRepository(maxRepositories: 100) {
-          repository {
-            nameWithOwner
-          }
-          contributions(first: 100) {
-            totalCount
-          }
-        }
-        issueContributionsByRepository(maxRepositories: 100) {
-          repository {
-            nameWithOwner
-          }
-          contributions(first: 100) {
-            totalCount
-          }
-        }
-        pullRequestReviewContributionsByRepository(maxRepositories: 100) {
-          repository {
-            nameWithOwner
-          }
-          contributions(first: 100) {
-            totalCount
-          }
-        }
-      }
-    }
-  }
-`;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 app.get("/contributions/:username", async (req, res) => {
   const username = req.params.username;
@@ -71,46 +38,9 @@ app.get("/contributions/:username", async (req, res) => {
       (item) => !item.repository.nameWithOwner.includes(username)
     ).length;
 
-    // Send the data back as JSON
-    const html = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <style>
-          #wrap {
-            width: 150px;
-            height: 25px;
-            color: #fff;
-            border-radius: 3px;
-            display: flex;
-            font-family: Arial, sans-serif;
-            align-items: center;
-            justify-content: center;
-          }
-          #name {
-            background-color: #535353;
-            padding: 2px 10px;
-            border-bottom-left-radius: 5px;
-            border-top-left-radius: 5px;
-          }
-          #number {
-            background-color: #1379b2;
-            padding: 2px 10px;
-            border-bottom-right-radius: 5px;
-            border-top-right-radius: 5px;
-          }
-          </style>
-        </head>
-        <body>
-          <div id="wrap">
-            <p id="name">Contributions</p>
-            <p id="number">${result}</p>
-          </div>
-        </body>
-      </html>
-    `;
-
-    res.send(html);
+    const html = await fs.readFile(path.join(__dirname, "index.html"), "utf8");
+    const renderedHtml = html.replace("{{contributions}}", result);
+    res.send(renderedHtml);
   } catch (error) {
     console.error(
       "Error fetching contributions:",
@@ -120,7 +50,7 @@ app.get("/contributions/:username", async (req, res) => {
   }
 });
 
-const PORT = 3000; // Choose your port
+const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
