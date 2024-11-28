@@ -44,8 +44,10 @@ const query = `
 `;
 
 // Function to execute the query
-async function fetchContributions(username) {
+async function fetchContributions() {
   try {
+    const username = process.argv[2];
+
     const response = await axios.post(
       "https://api.github.com/graphql",
       {
@@ -63,7 +65,7 @@ async function fetchContributions(username) {
     // Parse the response
     const data = response.data.data.user.contributionsCollection;
     const result = data.commitContributionsByRepository.filter(
-      (item) => !item.repository.nameWithOwner.includes("GeorgiosDrivas")
+      (item) => !item.repository.nameWithOwner.includes(username)
     ).length;
     console.log(
       "Total Contributions to other developers:",
@@ -78,4 +80,4 @@ async function fetchContributions(username) {
   }
 }
 
-fetchContributions("GeorgiosDrivas");
+fetchContributions();
