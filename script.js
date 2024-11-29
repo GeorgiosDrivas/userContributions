@@ -10,6 +10,7 @@ const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 app.get("/contributions/:username", async (req, res) => {
   const username = req.params.username;
