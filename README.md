@@ -1,4 +1,5 @@
 # User Contributions
 
-A script that showcases a user's contributions to other people's projects on GitHub.
-Using the GraphQL API, it calculates the contributions to other repositories displaying the total number.
+An innovative tool leveraging the GitHub API to highlight a user's contributions to repositories they don't own. This program provides a
+clear and concise view of collaborative efforts, making it easier to showcase contributions to open-source projects and other external
+repositories.
