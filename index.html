@@ -3,36 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>User Contributions</title>
-    <style>
-      #wrap {
-        width: 150px;
-        height: 25px;
-        color: #fff;
-        border-radius: 3px;
-        display: flex;
-        font-family: Arial, sans-serif;
-        align-items: center;
-        justify-content: center;
-      }
-      #name {
-        background-color: #535353;
-        padding: 2px 10px;
-        border-bottom-left-radius: 5px;
-        border-top-left-radius: 5px;
-      }
-      #number {
-        background-color: #1379b2;
-        padding: 2px 10px;
-        border-bottom-right-radius: 5px;
-        border-top-right-radius: 5px;
-      }
-    </style>
+    <title>Document</title>
   </head>
   <body>
-    <div id="wrap">
-      <p id="name">Contributions</p>
-      <p id="number">{{contributions}}</p>
+    <h1>Welcome to userContributions!</h1>
+    <p>
+      Here, you can get the contributions of a user made to other repositories.
+    </p>
+    <div>
+      <label for="name" style="display: block"
+        >Write a valid Github username</label
+      >
+      <input type="text" id="name" />
+      <button id="button">Generate</button>
     </div>
+    <script src="/dom.js"></script>
   </body>
 </html>

@@ -12,6 +12,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
+app.use(express.static(__dirname));
+
+app.get("/", async (req, res) => {
+  const html = await fs.readFile(path.join(__dirname, "index.html"), "utf8");
+  res.send(html);
+});
+
 app.get("/contributions/:username", async (req, res) => {
   const username = req.params.username;
 
@@ -39,7 +46,10 @@ app.get("/contributions/:username", async (req, res) => {
       (item) => !item.repository.nameWithOwner.includes(username)
     ).length;
 
-    const html = await fs.readFile(path.join(__dirname, "index.html"), "utf8");
+    const html = await fs.readFile(
+      path.join(__dirname, "results.html"),
+      "utf8"
+    );
     const renderedHtml = html.replace("{{contributions}}", result);
     res.send(renderedHtml);
   } catch (error) {
