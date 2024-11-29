@@ -7,18 +7,20 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 
 const app = express();
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const PORT = 3000;
 
 app.use(express.static(__dirname));
 
+// Landing page
 app.get("/", async (req, res) => {
   const html = await fs.readFile(path.join(__dirname, "index.html"), "utf8");
   res.send(html);
 });
 
+// Results page
 app.get("/contributions/:username", async (req, res) => {
   const username = req.params.username;
 
@@ -61,7 +63,6 @@ app.get("/contributions/:username", async (req, res) => {
   }
 });
 
-const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
