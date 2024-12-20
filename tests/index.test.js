@@ -1,4 +1,4 @@
-test('Button exists', () => {
+test('Invalid input', () => {
     document.body.innerHTML = `
       <input id="name" />
       <button id="button">Generate</button>
